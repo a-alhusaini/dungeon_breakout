@@ -11,6 +11,7 @@ func main() {
 	rl.InitWindow(800, 600, "Dungeon Breakout")
 	raygui.LoadStyle("./assets/style_terminal.rgs")
 	scenes.SetupManager()
+	rl.SetTargetFPS(60)
 
 	for !rl.WindowShouldClose() {
 

@@ -7,6 +7,10 @@ import (
 
 type gameScene struct{}
 
+var (
+	inputText string = "I am editable?"
+)
+
 func (m *gameScene) Create() {
 
 }
@@ -36,7 +40,6 @@ func (m *gameScene) Update() {
 		float32(rl.GetScreenHeight())-48,
 		float32(rl.GetScreenWidth()),
 		48)
-	inputText := "I am editable?"
 
 	raygui.TextBox(inputBoxRect, &inputText, 32, true)
 
