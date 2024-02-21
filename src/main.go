@@ -13,6 +13,7 @@ func main() {
 	scenes.SetupManager()
 
 	for !rl.WindowShouldClose() {
+
 		scenes.Manager.CurrentScene.Update()
 	}
 }

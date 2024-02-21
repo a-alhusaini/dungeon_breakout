@@ -4,8 +4,10 @@ var Manager manager
 
 func SetupManager() {
 	var MainMenu mainMenu
+	var GameScene gameScene
 	scenes := make([]Scene, 0)
 	scenes = append(scenes, &MainMenu)
+	scenes = append(scenes, &GameScene)
 
 	Manager.CurrentScene = &MainMenu
 	Manager.scenes = scenes
