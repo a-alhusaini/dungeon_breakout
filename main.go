@@ -37,11 +37,18 @@ func (g *Game) Update() error {
 	imgui.SetWindowPosVec2(imgui.NewVec2(0, 0))
 	imgui.SetWindowSizeVec2(imgui.NewVec2(float32(g.width), float32(g.height)))
 
+	imgui.SetCursorPosY(float32(g.height) - imgui.TextLineHeight()*2)
+
 	if imgui.InputTextWithHint("input", "", &g.text, imgui.InputTextFlagsEnterReturnsTrue, callback) {
 		g.text = ""
 	}
 
+	imgui.SetCursorPosY(0)
+
+	imgui.NewLine()
 	imgui.Text(g.text)
+
+	imgui.TextUnformatted(g.text)
 
 	return nil
 }
