@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	imgui "github.com/gabstv/cimgui-go"
 	ebimgui "github.com/gabstv/ebiten-imgui/v3"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -9,7 +11,9 @@ import (
 func main() {
 	ebiten.SetWindowSize(1024, 768)
 
-	gg := &Game{text: ""}
+	gg := &Game{input: "",
+		output:      "You are in front of a door. \n There is a key on the floor",
+		hasLockPick: false}
 
 	ebiten.RunGame(gg)
 
@@ -17,7 +21,9 @@ func main() {
 
 type Game struct {
 	width, height int
-	text          string
+	input         string
+	output        string
+	hasLockPick   bool
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
@@ -37,18 +43,31 @@ func (g *Game) Update() error {
 	imgui.SetWindowPosVec2(imgui.NewVec2(0, 0))
 	imgui.SetWindowSizeVec2(imgui.NewVec2(float32(g.width), float32(g.height)))
 
-	imgui.SetCursorPosY(float32(g.height) - imgui.TextLineHeight()*2)
+	imgui.NewLine()
 
-	if imgui.InputTextWithHint("input", "", &g.text, imgui.InputTextFlagsEnterReturnsTrue, callback) {
-		g.text = ""
+	for _, s := range strings.Split(g.output, "\n") {
+		imgui.Text(s)
 	}
 
-	imgui.SetCursorPosY(0)
+	imgui.SetCursorPosY(float32(g.height) - imgui.TextLineHeight()*2)
 
-	imgui.NewLine()
-	imgui.Text(g.text)
+	if imgui.InputTextWithHint("input", "", &g.input, imgui.InputTextFlagsEnterReturnsTrue, callback) {
+		words := strings.Split(g.input, " ")
+		if len(words) == 1 {
+			g.output = g.output + "\n" + "I don't understand."
+		} else if words[0] == "take" && words[1] == "lockpick" {
+			g.hasLockPick = true
+			g.output = g.output + "\n" + "Taken"
+		} else if words[0] == "open" && words[1] == "door" && g.hasLockPick == true {
+			g.output = g.output + "\n" + "You opened the door. You win"
+		} else {
+			g.output = g.output + "\n" + "I don't understand."
+		}
 
-	imgui.TextUnformatted(g.text)
+		g.input = ""
+	}
+
+	imgui.SetKeyboardFocusHereV(-1)
 
 	return nil
 }
