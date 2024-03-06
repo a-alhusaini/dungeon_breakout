@@ -52,19 +52,7 @@ func (g *Game) Update() error {
 	imgui.SetCursorPosY(float32(g.height) - imgui.TextLineHeight()*2)
 
 	if imgui.InputTextWithHint("input", "", &g.input, imgui.InputTextFlagsEnterReturnsTrue, callback) {
-		words := strings.Split(g.input, " ")
-		if len(words) == 1 {
-			g.output = g.output + "\n" + "I don't understand."
-		} else if words[0] == "take" && words[1] == "lockpick" {
-			g.hasLockPick = true
-			g.output = g.output + "\n" + "Taken"
-		} else if words[0] == "open" && words[1] == "door" && g.hasLockPick == true {
-			g.output = g.output + "\n" + "You opened the door. You win"
-		} else {
-			g.output = g.output + "\n" + "I don't understand."
-		}
-
-		g.input = ""
+		ParseInput(g)
 	}
 
 	imgui.SetKeyboardFocusHereV(-1)
