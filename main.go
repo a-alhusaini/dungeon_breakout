@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"dungeon_breakout/state"
+	"dungeon_breakout/state_manager"
 
 	imgui "github.com/gabstv/cimgui-go"
 	ebimgui "github.com/gabstv/ebiten-imgui/v3"
@@ -28,7 +28,7 @@ func main() {
 	}
 
 	gg.state = string(data)
-	gg.Output = state.Get(string(data), "rooms.0.room_text").String()
+	gg.Output = state_manager.Get(string(data), "rooms.0.room_text").String()
 
 	ebiten.RunGame(gg)
 

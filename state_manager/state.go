@@ -1,4 +1,4 @@
-package state
+package state_manager
 
 import (
 	"github.com/tidwall/gjson"

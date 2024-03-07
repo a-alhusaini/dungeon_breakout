@@ -7,7 +7,7 @@
     {
       "id": 1,
       "room_text": "You are in a dark room. There is a locked door here. \n And a key on the ground",
-      "environment": [
+      "objects": [
         {
           "name": "door",
           "interactions": [
@@ -45,11 +45,11 @@
             }
           ]
         }
-      ],
-      "commands": [
-        { "id": 1, "name": "open" },
-        { "id": 2, "name": "take" }
       ]
     }
+  ],
+  "commands": [
+    { "id": 1, "name": "open" },
+    { "id": 2, "name": "take" }
   ]
 }
