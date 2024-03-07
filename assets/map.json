@@ -1,0 +1,55 @@
+{
+  "state": {
+    "inventory": [],
+    "room_id": 1
+  },
+  "rooms": [
+    {
+      "id": 1,
+      "room_text": "You are in a dark room. There is a locked door here. \n And a key on the ground",
+      "environment": [
+        {
+          "name": "door",
+          "interactions": [
+            {
+              "command_id": 1,
+              "result": {
+                "output": "This door is locked",
+                "new_state": {}
+              }
+            },
+            {
+              "command_id": 1,
+              "result": {
+                "output": "You unlock the door!",
+                "new_state": {}
+              },
+              "requirements": [
+                { "requirement_type": "in_inventory", "name": "key" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "key",
+          "interactions": [
+            {
+              "command_id": 2,
+              "result": {
+                "output": "key is taken",
+                "new_state": {
+                  "inventory": "key",
+                  "roomCommand": "-interactions.key"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "commands": [
+        { "id": 1, "name": "open" },
+        { "id": 2, "name": "take" }
+      ]
+    }
+  ]
+}

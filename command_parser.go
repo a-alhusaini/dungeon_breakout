@@ -11,7 +11,18 @@ type CommandInput struct {
 }
 
 var commands = map[string]func(CommandInput) string{
-	"take": func(data CommandInput) string { return "unimplemented" },
+	"take": func(data CommandInput) string {
+		if len(data.inputs) < 2 {
+			return "I can't take nothing. Dumbass"
+		}
+
+		if data.inputs[1] == "key" {
+			data.g.hasKey = true
+			return "Taken"
+		}
+
+		return "something borked"
+	},
 	"quit": func(data CommandInput) string {
 		os.Exit(0)
 		return "exited"
@@ -22,7 +33,7 @@ var commands = map[string]func(CommandInput) string{
 			return "I can't open nothing"
 		}
 
-		if g.hasLockPick {
+		if g.hasKey {
 			return "You open the door and escape."
 		} else {
 			return "The door is locked"
@@ -34,9 +45,9 @@ func ParseInput(g *Game) {
 	words := strings.Split(g.input, " ")
 	v, exists := commands[words[0]]
 	if exists {
-		g.output = g.output + "\n" + v(CommandInput{g, words})
+		g.Output = g.Output + "\n" + v(CommandInput{g, words})
 	} else {
-		g.output = g.output + "\n" + "I don't understand."
+		g.Output = g.Output + "\n" + "I don't understand."
 	}
 
 	g.input = ""

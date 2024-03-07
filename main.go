@@ -1,7 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"os"
 	"strings"
+
+	"dungeon_breakout/state"
 
 	imgui "github.com/gabstv/cimgui-go"
 	ebimgui "github.com/gabstv/ebiten-imgui/v3"
@@ -12,8 +16,19 @@ func main() {
 	ebiten.SetWindowSize(1024, 768)
 
 	gg := &Game{input: "",
-		output:      "You are in front of a door. \n There is a key on the floor",
-		hasLockPick: false}
+		Output: "",
+		hasKey: false,
+	}
+
+	data, err := os.ReadFile("./assets/map.json")
+
+	if err != nil {
+		fmt.Println("can't read game data")
+		return
+	}
+
+	gg.state = string(data)
+	gg.Output = state.Get(string(data), "rooms.0.room_text").String()
 
 	ebiten.RunGame(gg)
 
@@ -22,8 +37,9 @@ func main() {
 type Game struct {
 	width, height int
 	input         string
-	output        string
-	hasLockPick   bool
+	Output        string `json:"rooms[0].room_text"`
+	hasKey        bool
+	state         string
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
@@ -45,7 +61,7 @@ func (g *Game) Update() error {
 
 	imgui.NewLine()
 
-	for _, s := range strings.Split(g.output, "\n") {
+	for _, s := range strings.Split(g.Output, "\n") {
 		imgui.Text(s)
 	}
 
