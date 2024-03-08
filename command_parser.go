@@ -62,22 +62,33 @@ func isMapCommand(state string, inputs []string) (bool, int64) {
 }
 
 func doMapCommand(g *Game, inputs []string, commandID int64) string {
-	var res string
 
 	if len(inputs) < 2 {
-		res = "I don't understand"
-		return res
+		return "I don't understand"
+
 	}
 
 	objectCount := state_manager.Get(g.state, "rooms.0.objects.#").Int()
 
 	for i := 0; i < int(objectCount); i++ {
 
-		if inputs[1] ==
-			state_manager.Get(g.state, "rooms.0.objects."+strconv.Itoa(int(i))+".name").String() {
-			res = "found a match!"
+		if inputs[1] == state_manager.Get(g.state, genObjectPath(0, i)+".name").String() {
+			return state_manager.Get(
+				g.state, genIneractionPath(0, i, 0)+".result.output").String()
 		}
 	}
 
-	return res
+	return "I don't understand"
+}
+
+func genRoomPath(roomID int) string {
+	return "rooms." + strconv.Itoa(roomID)
+}
+
+func genObjectPath(roomID, objectID int) string {
+	return genRoomPath(roomID) + ".objects." + strconv.Itoa(objectID)
+}
+
+func genIneractionPath(roomID, objectID, interactionID int) string {
+	return genObjectPath(roomID, objectID) + ".interactions." + strconv.Itoa(interactionID)
 }
